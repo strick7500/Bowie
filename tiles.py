@@ -125,6 +125,16 @@ class FindDaggerRoom(LootRoom):
         It's a dagger!  You pick it up.
         """
         
+class Find5GoldRoom(LootRoom):
+    def __init__(self, x, y):
+        super().__init__(x, y, items.Gold(5))
+    
+    def intro_text(self):
+        return """
+        Something shiny catches your eye.
+        It's a 5 gold piece!  Lucky you!
+        """
+        
 class LeaveCaveRoom(MapTile):
     def intro_text(self):
         return """
