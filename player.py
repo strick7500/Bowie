@@ -6,7 +6,8 @@ Created on Wed Oct 23 13:42:28 2019
 @author: adamstrick
 """
 
-import items
+import random
+import items, world
 
 class Player():
     def __init__(self):
