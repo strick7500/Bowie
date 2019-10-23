@@ -100,6 +100,20 @@ class GiantSpiderRoom(EnemyRoom):
             return """
             The corpse of a dead spider rots on the ground.
             """
+            
+class OgreRoom(EnemyRoom):
+    def __init__(self, x, y):
+        super().__init__(x, y, enemies.Ogre())
+        
+    def intro_text(self):
+        if self.enemy.is_alive():
+            return """
+            A massive ogre turns to face you, snarling and foaming at the mouth!
+            """
+        else:
+            return """
+            The dead ogre takes up most of the floor here.
+            """
         
 class FindDaggerRoom(LootRoom):
     def __init__(self, x, y):
