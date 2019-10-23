@@ -71,6 +71,12 @@ class EnemyRoom(MapTile):
             player.hp = player.hp - self.enemy.damage
             print("Enemy does {} damage.  You have {} HP remaining.".format(self.enemy.damage, player.hp))
             
+    def available_actions(self):
+        if self.enemy.is_alive():
+            return [actions.Flee(tile=self), actions.Attack(enemy=self.enemy)]
+        else:
+            return self.adjacent_moves()
+            
 class EmptyCavePath(MapTile):
     def intro_text(self):
         return """
