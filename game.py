@@ -29,3 +29,6 @@ def play():
                 if action_input == action.hotkey:
                     player.do_action(action, **action.kwargs)
                     break
+                
+if __name__ == "__main__":
+    play()
