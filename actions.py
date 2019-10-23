@@ -6,7 +6,7 @@ Created on Wed Oct 23 13:50:26 2019
 @author: adamstrick
 """
 
-import Player
+from player import Player
  
 class Action():
     def __init__(self, method, name, hotkey, **kwargs):
@@ -42,3 +42,7 @@ class ViewInventory(Action):
 class Attack(Action):
     def __init__(self, enemy):
         super().__init__(method=Player.attack, name="Attack", hotkey='a', enemy=enemy)
+        
+class Flee(Action):
+    def __init__(self, tile):
+        super().__init__(method=Player.flee, name="Flee", hotkey='f', tile=tile)
