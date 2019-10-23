@@ -6,7 +6,7 @@ Created on Wed Oct 23 13:20:20 2019
 @author: adamstrick
 """
 
-import items, enemies
+import items, enemies, actions, world
 
 class MapTile():
     def __init__(self, x, y):
@@ -18,6 +18,26 @@ class MapTile():
         
     def modify_player(self, player):
         raise NotImplementedError()
+        
+    def adjacent_moves(self):
+        """Returns all move actions for adjacent tiles."""
+        moves = []
+        if world.tile_exists(self.x + 1, self.y):
+            moves.append(actions.MoveEast())
+        if world.tile_exists(self.x - 1, self.y):
+            moves.append(actions.MoveWest())
+        if world.tile_exists(self.x, self.y - 1):
+            moves.append(actions.MoveNorth())
+        if world.tile_exists(self.x, self.y + 1):
+            moves.append(actions.MoveSouth())
+        return moves
+ 
+    def available_actions(self):
+        """Returns all of the available actions in this room."""
+        moves = self.adjacent_moves()
+        moves.append(actions.ViewInventory())
+     
+        return moves
         
 class StartingRoom(MapTile):
     def intro_text(self):
@@ -50,6 +70,12 @@ class EnemyRoom(MapTile):
         if self.enemy.is_alive():
             player.hp = player.hp - self.enemy.damage
             print("Enemy does {} damage.  You have {} HP remaining.".format(self.enemy.damage, player.hp))
+            
+    def available_actions(self):
+        if self.enemy.is_alive():
+            return [actions.Flee(tile=self), actions.Attack(enemy=self.enemy)]
+        else:
+            return self.adjacent_moves()
             
 class EmptyCavePath(MapTile):
     def intro_text(self):
@@ -84,3 +110,15 @@ class FindDaggerRoom(LootRoom):
         You noti9ce something shiny in the corner.
         It's a dagger!  You pick it up.
         """
+        
+class LeaveCaveRoom(MapTile):
+    def intro_text(self):
+        return """
+        You see a bright light in the distance...
+        ... it grows as you get closer! It's sunlight!
+         
+        Victory is yours!
+        """
+ 
+    def modify_player(self, player):
+        player.victory = True
